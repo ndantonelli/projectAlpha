@@ -1,0 +1,19 @@
+<!Doctype html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="js/tester.js"></script>
+</head>
+<body>
+	IMPORTANT: you must be accessing this from within the vagrant box/production server, local files wont work<br>
+	To do this simply add /tester.html to the ip address (ex: 172.28.128.3/tester.html)<br><br>
+	Endpoint: <input id="endpoint" type="text"/> (ex:user = oasys/api/index.php/user)<br>
+	Body: <br><textarea id="body"rows="10" cols ="100"></textarea> <br>(ex: {"id": 4, "name": "bob", "quantity":5}     THERE MUST BE QUOTES AROUND STRINGS AND KEYS (for key value pairs in json))<br>
+	<div id="radioDiv">
+		<input type="radio" name="type" value="0" checked>GET<br>
+		<input type="radio" name="type" value="1">POST<br>
+	</div>
+	<input type="submit" id="submitForm"><br><br>
+	RESULT:<br><span id="result"></span>
+</body>
+</html>
