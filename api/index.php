@@ -2,13 +2,14 @@
 require 'vendor/autoload.php';
 
 $app = new \Slim\Slim();
-global $db = new mysqli("localhost", "root", "Foundry", "FoundryDB" );
+$db = new mysqli("localhost", "root", "Foundry", "FoundryDB" );
 
 $app->post('/auth', function(){
 	echo -1;
 });
 
 $app->post('/user', function(){
+	global $db;
 	$email = $_POST['email'];
 	$pass = $_POST['pass'];
 	$first = $_POST['first'];
