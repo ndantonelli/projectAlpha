@@ -20,7 +20,7 @@ $app->post('/user', function(){
 
 	$result = $db->query("SELECT id FROM users WHERE email = '$email' OR (num = '$num' AND area = '$area'");
 	if($result->num_rows > 0)
-		echo json_encode(id => -1);
+		echo json_encode(array("id" => -1));
 	else{
 		$db->query("INSERT INTO user(email, pass, first, last, area, num, tutor)
 					VALUES ('$email', '$pass', '$first', '$last', '$area', '$num', '$tut') ");
