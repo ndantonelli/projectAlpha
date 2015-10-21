@@ -22,7 +22,7 @@ $app->post('/user', function(){
 	if($result->num_rows > 0)
 		echo json_encode(array("id" => -1));
 	else{
-		$db->query("INSERT INTO user(email, pass, first, last, area, num, tutor)
+		$db->query("INSERT INTO users(email, pass, first, last, area, num, tutor)
 					VALUES ('$email', '$pass', '$first', '$last', '$area', '$num', '$tut') ");
 		$result = $db->query("SELECT LAST_INSERT_ID()");
 		echo $result->fetch_assoc();
