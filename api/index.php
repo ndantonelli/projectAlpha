@@ -5,6 +5,14 @@ require 'vendor/autoload.php';
 $app = new \Slim\Slim();
 $db = new mysqli("localhost", "root", "Foundry", "FoundryDB" );
 
+
+/*
+{
+"pass":"hi",
+"area":901,
+"num":7777777
+}
+*/
 $app->post('/auth', function(){
 	global $db;
 	$result;
@@ -22,12 +30,23 @@ $app->post('/auth', function(){
 	else{
 		$result = $result->fetch_assoc();
 		if(Password::check($_POST['pass'], $result['pass']))
-			echo json_encode(array("id" => $result['id']));
+			echo json_encode(array("id" => $result['id']), JSON_NUMERIC_CHECK);
 		else
 			echo json_encode(array("id" => -1));
 	}
 });
 
+/*
+{
+"email":"n@n.com",
+"pass":"hi",
+"first":"bob",
+"last":"smith",
+"area":901,
+"num":7777777,
+"tut":0
+}
+*/
 $app->post('/user', function(){
 	global $db;
 	$email = $_POST['email'];
@@ -39,11 +58,6 @@ $app->post('/user', function(){
 
 	$salt = Password::generateSalt(50);
 	$hash = Password::hash($_POST['pass'], $salt);
-	// if(Password::check("bye", $hash))
-	// 	echo json_encode(array("id"=>1));
-	// else
-	// 	echo json_encode(array("id"=>0));
-
 	
 	$result = $db->query("SELECT id FROM users WHERE email = '$email' OR (num = '$num' AND area = '$area')");
 	if($result->num_rows > 0)
@@ -52,7 +66,7 @@ $app->post('/user', function(){
 		$db->query("INSERT INTO users(email, pass, first, last, area, num, salt, tutor)
 					VALUES ('$email', '$hash', '$first', '$last', '$area', '$num', '$salt', '$tut') ");
 		$result = $db->query("SELECT LAST_INSERT_ID()");
-		echo json_encode(array("id"=> $result->fetch_assoc()['LAST_INSERT_ID()']));
+		echo json_encode(array("id"=> $result->fetch_assoc()['LAST_INSERT_ID()']), JSON_NUMERIC_CHECK);
 	}
 });
 
