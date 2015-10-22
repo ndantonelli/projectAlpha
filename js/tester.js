@@ -17,11 +17,9 @@ $(document).ready(function(){
 				data: body, 
 				success: function(result){
 					$('#result').text(JSON.stringify(result));
-					$('#body').val("");
-					$('#endpoint').val("");
 				},
 				error: function(){
-					$('#result').html("Could not complete http request as entered.<br>Endpoint: " + endpoint + "<br>Body: " + body);
+					$('#result').html("Could not complete http request as entered.<br>Endpoint: " + endpoint + "<br>Body: " + JSON.stringify(body));
 				}
 			});
 		}
@@ -33,11 +31,9 @@ $(document).ready(function(){
 				data: body, 
 				success: function(result){
 					$('#result').text(JSON.stringify(result));
-					$('#body').val("");
-					$('#endpoint').val("");
 				},
 				error: function(xhr, status, error){
-					$('#result').html("Could not complete http request as entered.<br>Endpoint: " + endpoint + "<br>Body: " + body);
+					$('#result').html("Could not complete http request as entered.<br>Endpoint: " + endpoint + "<br>Body: " + JSON.stringify(body));
 				}
 			});
 		}
