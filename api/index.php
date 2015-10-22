@@ -36,6 +36,19 @@ $app->post('/auth', function(){
 	}
 });
 
+$app->post('/validate', function(){
+	global $db;
+	$email = $_POST['email'];
+	$area = $_POST['area'];
+	$num = $_POST['num'];
+
+	$result = $db->query("Select id FROM users WHERE email = '$email' OR (area = '$area' AND num = '$num')");
+	if($result->num_rows == 0)
+		echo json_encode(array("allow" => true));
+	else
+		echo json_encode(array("allow" => false));
+});
+
 /*
 {
 "email":"n@n.com",
