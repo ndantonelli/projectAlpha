@@ -52,13 +52,13 @@ $app->post('/validate', function(){
 		vPhone = false;
 
 	if(vEmail && vPhone)
-		echo json_encode(array("allow" => true));
+		echo json_encode(array("allow" => true, "invalid" => 0));
 	else if(vEmail && !vPhone)
-		echo json_encode(array("allow" => false, "invalid" => 1));
-	else if(!vEmail && vPhone)
-		echo json_encode(array("allow" => false, "invalid" => 0));
-	else
 		echo json_encode(array("allow" => false, "invalid" => 2));
+	else if(!vEmail && vPhone)
+		echo json_encode(array("allow" => false, "invalid" => 1));
+	else
+		echo json_encode(array("allow" => false, "invalid" => 3));
 });
 
 /*
