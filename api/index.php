@@ -42,11 +42,23 @@ $app->post('/validate', function(){
 	$area = $_POST['area'];
 	$num = $_POST['num'];
 
-	$result = $db->query("Select id FROM users WHERE email = '$email' OR (area = '$area' AND num = '$num')");
+	$vEmail = true;
+	$vPhone = true;
+	$result = $db->query("Select id FROM users WHERE email = '$email'");
 	if($result->num_rows == 0)
+		vEmail = false;
+	$result = $db->query("Select id FROM users WHERE area = '$area' AND num = '$num'");
+	if($result->num_rows == 0)
+		vPhone = false;
+
+	if(vEmail && vPhone)
 		echo json_encode(array("allow" => true));
+	else if(vEmail && !vPhone)
+		echo json_encode(array("allow" => false, "invalid" => 1));
+	else if(!vEmail && vPhone)
+		echo json_encode(array("allow" => false, "invalid" => 0));
 	else
-		echo json_encode(array("allow" => false));
+		echo json_encode(array("allow" => false, "invalid" => 2));
 });
 
 /*
