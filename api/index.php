@@ -46,16 +46,16 @@ $app->post('/validate', function(){
 	$vPhone = true;
 	$result = $db->query("Select id FROM users WHERE email = '$email'");
 	if($result->num_rows == 0)
-		vEmail = false;
+		$vEmail = false;
 	$result = $db->query("Select id FROM users WHERE area = '$area' AND num = '$num'");
 	if($result->num_rows == 0)
-		vPhone = false;
+		$vPhone = false;
 
-	if(vEmail && vPhone)
+	if($vEmail && $vPhone)
 		echo json_encode(array("allow" => true, "invalid" => 0));
-	else if(vEmail && !vPhone)
+	else if($vEmail && !$vPhone)
 		echo json_encode(array("allow" => false, "invalid" => 2));
-	else if(!vEmail && vPhone)
+	else if(!$vEmail && $vPhone)
 		echo json_encode(array("allow" => false, "invalid" => 1));
 	else
 		echo json_encode(array("allow" => false, "invalid" => 3));
