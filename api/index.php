@@ -45,10 +45,10 @@ $app->post('/validate', function(){
 	$vEmail = true;
 	$vPhone = true;
 	$result = $db->query("Select id FROM users WHERE email = '$email'");
-	if($result->num_rows == 0)
+	if($result->num_rows > 0)
 		$vEmail = false;
 	$result = $db->query("Select id FROM users WHERE area = '$area' AND num = '$num'");
-	if($result->num_rows == 0)
+	if($result->num_rows > 0)
 		$vPhone = false;
 
 	if($vEmail && $vPhone)
