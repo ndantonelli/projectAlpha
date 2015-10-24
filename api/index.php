@@ -39,6 +39,20 @@ $app->post('/auth', function(){
 	}
 });
 
+$app->post('/reset', function(){
+	$area = $_POST['area'];
+	$num = $_POST['num'];
+	$result = $db->query("SELECT id FROM users WHERE area='$area' AND num = '$num'");
+	if($result->num_rows == 0)
+		echo json_encode(array("type" => 0));
+	else{
+		$salt = Password::generateSalt(6);
+		$emailNum = area + num + "@vtext.com";
+		mail($emailNum, "", "You're reset code is " + $salt);
+		echo json_encode(array("type" => 1));
+	}
+});
+
 $app->post('/validate', function(){
 	global $db;
 	$email = $_POST['email'];
