@@ -1,6 +1,7 @@
 <?php
 require 'php-scrypt/scrypt.php';
 require 'vendor/autoload.php';
+require 'PHPMailer/class.phpmailer.php'
 
 $app = new \Slim\Slim();
 $db = new mysqli("localhost", "root", "Foundry", "FoundryDB" );
@@ -49,7 +50,30 @@ $app->post('/reset', function(){
 	else{
 		$salt = Password::generateSalt(6);
 		$emailNum = $area + $num + "@vtext.com";
-		mail($emailNum, "", "You're reset code is " + $salt);
+		// Instantiate Class
+		$mail = new PHPMailer();
+		 
+		// Set up SMTP
+		$mail->IsSMTP();                // Sets up a SMTP connection
+		$mail->SMTPDebug  = 2;          // This will print debugging info
+		$mail->SMTPAuth = true;         // Connection with the SMTP does require authorization
+		$mail->SMTPSecure = "tls";      // Connect using a TLS connection
+		$mail->Host = "smtp.live.com";
+		$mail->Port = 587;
+		$mail->Encoding = '7bit';       // SMS uses 7-bit encoding
+		 
+		// Authentication
+		$mail->Username   = "ndantonelli@hotmail.com"; // Login
+		$mail->Password   = "Nicholas1"; // Password
+		 
+		// Compose
+		$mail->Subject = "";     // Subject (which isn't required)
+		$mail->Body = "Your Reset code is: " + $salt;        // Body of our message
+		 
+		// Send To
+		$mail->AddAddress( $emailNum + "@vtext.com" ); // Where to send it
+		var_dump( $mail->send() );      // Send!
+		//mail($emailNum, "", "You're reset code is " + $salt);
 		echo json_encode(array("type" => 1));
 	}
 });
