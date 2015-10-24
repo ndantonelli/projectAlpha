@@ -48,7 +48,7 @@ $app->post('/reset', function(){
 		echo json_encode(array("type" => 0));
 	else{
 		$salt = Password::generateSalt(6);
-		$emailNum = area + num + "@vtext.com";
+		$emailNum = $area + $num + "@vtext.com";
 		mail($emailNum, "", "You're reset code is " + $salt);
 		echo json_encode(array("type" => 1));
 	}
