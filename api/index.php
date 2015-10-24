@@ -1,7 +1,7 @@
 <?php
 require 'php-scrypt/scrypt.php';
 require 'vendor/autoload.php';
-require 'PHPMailer/class.phpmailer.php'
+require 'PHPMailer/class.phpmailer.php';
 
 $app = new \Slim\Slim();
 $db = new mysqli("localhost", "root", "Foundry", "FoundryDB" );
