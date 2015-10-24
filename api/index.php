@@ -40,7 +40,7 @@ $app->post('/auth', function(){
 });
 
 $app->post('/reset', function(){
-	gloval $db;
+	global $db;
 	$area = $_POST['area'];
 	$num = $_POST['num'];
 	$result = $db->query("SELECT id FROM users WHERE area='$area' AND num = '$num'");
