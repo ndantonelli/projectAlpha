@@ -29,8 +29,11 @@ $app->post('/auth', function(){
 		echo json_encode(array("id" => 0));
 	else{
 		$result = $result->fetch_assoc();
-		if(Password::check($_POST['pass'], $result['pass']))
-			echo json_encode(array("id" => $result['id']), JSON_NUMERIC_CHECK);
+		$id = $result['id'];
+		if(Password::check($_POST['pass'], $result['pass'])){
+			$result = $db->query("Select id, email, first, last, url, area, num FROM users WHERE id='$id'");
+			echo json_encode((Object)mysqli_fetch_assoc($result), JSON_NUMERIC_CHECK);
+		}
 		else
 			echo json_encode(array("id" => -1));
 	}
