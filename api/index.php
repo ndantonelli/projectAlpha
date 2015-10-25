@@ -111,7 +111,7 @@ $app->get('/subjects', function(){
 					array_push($array1, array("id" => $id, "name" =>  $row['name'], "url" => $row['url'], "subs" => $array2));
 				}
 			}
-			echo json_encode($array1);
+			echo json_encode(array("topics" => $array1));
 		}
 		else{
 			echo json_encode(array("error" => 0));
