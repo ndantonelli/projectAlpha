@@ -39,6 +39,86 @@ $app->post('/auth', function(){
 	}
 });
 
+$app->get('/tutors', function(){
+	global $db;
+	$tid = $_GET['tid'];
+	$sid = $_GET['sid'];
+
+	$result = $db->query("SELECT id, first, last, url, area, num FROM tutors INNER JOIN users ON tutors.uid = users.id WHERE tutors.status = 'active' AND tutors.tid = '$tid' AND tutors.sid = '$sid'");
+	if($result->num_rows > 0){
+		$array1 = [];
+		while($row = $result->fetch_assoc())
+			array_push($array1, $row);
+		echo json_encode($array1);
+	}
+	else
+		echo json_encode(array("type" => 1));
+});
+
+
+$app->post('/subjects', function(){
+	global $db;
+	$topic = $_POST['topic'];
+	$sub = $_POST['sub'];
+	$uid = $_POST['uid'];
+
+	$result = $db->query("SELECT id FROM topics WHERE name = '$topic'");
+	$id = 0;
+	if($result->num_rows == 0){
+		$db->query("INSERT INTO topics(name, url) VALUES ('$topic', 'google.com')");
+		$id = $db->query("SELECT LAST_INSERT_ID()")->fetch_assoc()['LAST_INSERT_ID()'];
+	}
+	else
+		$id = $result->fetch_assoc()['id'];
+
+	$result = $db->query("SELECT id FROM subs WHERE name = '$sub' AND tid = '$id'");
+	if($result->num_rows == 0){
+		$db->query("INSERT INTO subs(tid, name, url) VALUES ('$id', '$sub', 'google.com')");
+		$sid = $db->query("SELECT LAST_INSERT_ID()")->fetch_assoc()['LAST_INSERT_ID()'];
+
+		$db->query("INSERT INTO tutors (uid,tid,sid) values ('$uid', '$id', '$sid')");
+		echo json_encode(array("type"=> 0));
+	}
+	else{
+		$sid = $result->fetch_assoc()['id'];
+		$result = $db->query("SELECT uid FROM tutors WHERE uid = '$uid' AND tid = '$id' AND sid='$sid'");
+		if($result->num_rows == 0){
+			$db->query("INSERT INTO tutors (uid,tid,sid) values ('$uid', '$id', '$sid')");
+			echo json_encode(array("type"=> 0));
+		}
+		else
+			echo json_encode(array("type"=> 1));
+	}
+});
+
+$app->get('/subjects', function(){
+	global $db;
+	if(isset($_get['tid'])){
+
+	}
+	else{
+		$result = $db->query("SELECT * FROM topics");
+		if($result->num_rows > 0){
+			$array1 = [];
+			while($row = $result->fetch_assoc()){
+				$id = $row['id'];
+				$subs = $db->query("SELECT * FROM subs WHERE tid = '$id'");
+				if($subs->num_rows > 0){
+					$array2 = [];
+					while($row2 = $subs->fetch_assoc()){
+						array_push($array2, $row2);
+					}
+					array_push($array1, array("id" => $id, "name" =>  $row['name'], "url" => $row['url'], "subs" => $array2));
+				}
+			}
+			echo json_encode($array1);
+		}
+		else{
+			echo json_encode(array("error" => 0));
+		}
+	}
+});
+
 $app->post('/validate', function(){
 	global $db;
 	$email = $_POST['email'];
