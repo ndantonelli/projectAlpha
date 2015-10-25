@@ -49,7 +49,7 @@ $app->get('/tutors', function(){
 		$array1 = [];
 		while($row = $result->fetch_assoc())
 			array_push($array1, $row);
-		echo json_encode($array1);
+		echo json_encode(array("tutors" => $array1));
 	}
 	else
 		echo json_encode(array("type" => 1));
