@@ -44,7 +44,7 @@ $app->get('/tutors', function(){
 	$tid = $_GET['tid'];
 	$sid = $_GET['sid'];
 
-	$result = $db->query("SELECT id, first, last, url, area, num FROM tutors INNER JOIN users ON tutors.uid = users.id WHERE tutors.status = 'active' AND tutors.tid = '$tid' AND tutors.sid = '$sid'");
+	$result = $db->query("SELECT id, first, last, url, area, num FROM tutors INNER JOIN users ON tutors.uid = users.id WHERE users.status = 'active' AND tutors.tid = '$tid' AND tutors.sid = '$sid'");
 	if($result->num_rows > 0){
 		$array1 = [];
 		while($row = $result->fetch_assoc())
@@ -53,6 +53,14 @@ $app->get('/tutors', function(){
 	}
 	else
 		echo json_encode(array("type" => 1));
+});
+
+$app->get('/update', function(){
+	global $db;
+	$date = date("Y-m-d H:i:s");
+
+	
+
 });
 
 
